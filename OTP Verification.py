@@ -44,7 +44,7 @@ class OTP(Tk):
     def Getcode(self):
         self.server = smtplib.SMTP('smtp.gmail.com', 587)
         self.server.starttls()
-        self.server.login('[enter email here]', '[enter app password here]')
+        self.server.login('[Enter email here]', '[Enter app password here]')
         self.otp =''.join([str(random.randint(0, 9)) for i in range(4)]) 
         self.msg = 'Your OTP is '+str(self.otp)
         self.server.sendmail('[Enter sender\'s email]', '[recipient\'s email]', self.msg)
