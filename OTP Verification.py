@@ -1,5 +1,6 @@
 from tkinter import *
 import random
+import smtplib
 from tkinter import messagebox
 
 class OTP(Tk):
@@ -8,7 +9,6 @@ class OTP(Tk):
         self.title('OTP Verification')
         self.geometry('700x500')
         self.resizable(0, 0)
-        self.n = str(self.otp())
         self.bg = 'Blue'
         self.buttonFont = 'Calibri 15 bold'
         self.textFont = 'TimesNewRoman 25 italic'
@@ -16,15 +16,16 @@ class OTP(Tk):
     def Labels(self):
         self.frame = Frame(bg=self.bg, width=900, height=106).place(x=0, y=0)
         
-        self.image = PhotoImage(file='Images\icon.png')
+        # self.image = PhotoImage(file='Images\icon.png')
         
-        Label(self.frame, bg=self.bg, image=self.image).place(x=5, y=0)
+        Label(self.frame, bg=self.bg).place(x=5, y=0)
         
         Label(self.frame, text='GENERATE OTP', font= 'Calibri 60 bold', fg='white', bg=self.bg).place(x=140)
         
         self.canvas = Canvas(self, bg='White', width=900, height=400).place(x=0, y=105)
         
-        self.text = Text(self.canvas, wrap=WORD,font=self.textFont, width=4, height=1, borderwidth=2).place(x=320, y=180)
+        self.text = Entry(self.canvas,font=self.textFont, width=4, borderwidth=2)
+        self.text.place(x=320, y=180)
 
     def Buttons(self):
         
@@ -32,20 +33,22 @@ class OTP(Tk):
         # Button(self.frame, image=self.resend, border=None).place(x=810, y=30)
                 
         Button (self.canvas, text='Get Code', borderwidth=0, font=self.buttonFont,justify='center', width=10, command=self.Getcode).place(x=220, y=250)
-
-    
-    def otp(self):
-        return random.randrange(1000, 10000)
     
     
     def verify(self):
-        if self.text() == self.n():
+        if self.text.get() == self.otp:
             messagebox.showinfo('Alert', 'Successfully verified.')
         else:
             messagebox.showwarning('Alert', 'Wrong Input.')
         
     def Getcode(self):
-        print(self.otp())
+        self.server = smtplib.SMTP('smtp.gmail.com', 587)
+        self.server.starttls()
+        self.server.login('[enter email here]', '[enter app password here]')
+        self.otp =''.join([str(random.randint(0, 9)) for i in range(4)]) 
+        self.msg = 'Your OTP is '+str(self.otp)
+        self.server.sendmail('[Enter sender\'s email]', '[recipient\'s email]', self.msg)
+        self.server.quit()
 
         Button(self.canvas, text='Verify', borderwidth=0, font=self.buttonFont,justify='center', width=10, command=self.verify).place(x=400, y=250)
         
