@@ -47,7 +47,7 @@ class OTP(Tk):
         self.server.login('[Enter email here]', '[Enter app password here]')
         self.otp =''.join([str(random.randint(0, 9)) for i in range(4)]) 
         self.msg = 'Your OTP is '+str(self.otp)
-        self.server.sendmail('[Enter sender\'s email]', '[recipient\'s email]', self.msg)
+        self.server.sendmail("[Enter sender's email]", "[recipient's email]", self.msg)
         self.server.quit()
 
         Button(self.canvas, text='Verify', borderwidth=0, font=self.buttonFont,justify='center', width=10, command=self.verify).place(x=400, y=250)
